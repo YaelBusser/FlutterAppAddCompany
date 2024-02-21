@@ -16,5 +16,4 @@ For help getting started with Flutter development, view the
 samples, guidance on mobile development, and a full API reference.
 
 ## Documentation of the TP 
-<a href="https://docs.google.com/presentation/d/1AD9E1Nw8yieayykHYscBeXNBowc_66AqHOLZKUdw434/edit#slide=id.gb891c45dbc_0_99" target="_blank">https://docs.google.com/presentation/d/1AD9E1Nw8yieayykHYscBeXNBowc_66AqHOLZKUdw434/edit#slide=id.gb891c45dbc_0_99</a>
 [Google Slides](https://docs.google.com/presentation/d/1AD9E1Nw8yieayykHYscBeXNBowc_66AqHOLZKUdw434/edit#slide=id.gb891c45dbc_0_99)
