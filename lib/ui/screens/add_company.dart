@@ -2,12 +2,15 @@ import 'package:first_app/models/address.dart';
 import 'package:first_app/ui/screens/search_address.dart';
 import 'package:flutter/material.dart';
 import 'package:first_app/models/company.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../blocs/company_cubit.dart';
 
 class AddCompany extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
-  Address? address;
+  Address? _address;
   AddCompany({super.key});
 
   @override
@@ -58,13 +61,13 @@ class AddCompany extends StatelessWidget {
                     return null;
                   },
                   onTap: () async {
-                    address = await Navigator.push(
+                    _address = await Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => SearchAddress()),
                     );
-                    if (address != null) {
+                    if (_address != null) {
                       _addressController.text =
-                          '${address?.street}, ${address?.postCode} ${address?.city}';
+                          '${_address?.street}, ${_address?.postCode} ${_address?.city}';
                     }
                   },
                 ),
@@ -74,14 +77,15 @@ class AddCompany extends StatelessWidget {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      final newCompany = Company(
-                          _nameController.text,
-                          address as Address);
-                      Navigator.pop(context, newCompany);
+                  onPressed: () {
+                    if (_formKey.currentState!.validate() && _address != null) {
+                      final String name = _nameController.text;
+                      final Company company = Company(name, _address!);
+                      context.read<CompanyCubit>().addCompany(company);
+                      Navigator.of(context).pop();
                     }
                   },
+
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
                       shape: RoundedRectangleBorder(

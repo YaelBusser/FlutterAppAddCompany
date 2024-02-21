@@ -1,6 +1,8 @@
 import 'package:first_app/models/address.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../blocs/company_cubit.dart';
 import '../../models/company.dart';
 import 'add_company.dart';
 
@@ -12,14 +14,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final List<Company> _companies = [
-    const Company(
-        'Entreprise 1', Address("5 rue principale", "Châtelain", "53200", "41.40338, 2.17403")),
-    const Company(
-        'Entreprise 2', Address("5 rue principale", "Châtelain", "53200", "41.40338, 2.17403")),
-    const Company(
-        'Entreprise 3', Address("5 rue principale", "Châtelain", "53200", "41.40338, 2.17403")),
-  ];
+  final List<Company> _companies = [];
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +22,21 @@ class _HomeState extends State<Home> {
         appBar: AppBar(
           title: const Text('Liste des entreprises'),
         ),
-        body: ListView.builder(
-          itemCount: _companies.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(_companies[index].name),
-              subtitle: Text(
-                  '${_companies[index].address.street}, ${_companies[index].address.postCode} ${_companies[index].address.city} \n [${_companies[index].address.coordonnees}]'),
+        body: BlocBuilder<CompanyCubit, List<Company>>(
+          builder: (context, state) {
+            return ListView.separated(
+              itemCount: state.length,
+              itemBuilder: (BuildContext context, int index) {
+                final Company company = state[index];
+                return ListTile(
+                  title: Text(company.name),
+                  subtitle: Text(
+                      '${company.address.street}, ${company.address.city} \n ${company.address.coordonnees}'),
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return const Divider(height: 0);
+              },
             );
           },
         ),
@@ -59,15 +62,9 @@ class _HomeState extends State<Home> {
             color: Colors.white,
           ),
         ),
-        bottomNavigationBar: BottomAppBar(
-            color: const Color.fromRGBO(219, 0, 0, 1.0),
-            shape: const CircularNotchedRectangle(),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  IconButton(
-                      onPressed: () async {},
-                      icon: const Icon(Icons.home, color: Colors.white)),
-                ])));
+        bottomNavigationBar: const BottomAppBar(
+          color: Color.fromRGBO(219, 0, 0, 1.0),
+          shape: CircularNotchedRectangle(),
+        ));
   }
 }

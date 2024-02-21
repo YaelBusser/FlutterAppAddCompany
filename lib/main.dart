@@ -1,10 +1,25 @@
+import 'package:first_app/blocs/company_cubit.dart';
 import 'package:first_app/router_app.dart';
 import 'package:first_app/ui/screens/add_company.dart';
 import 'package:first_app/ui/screens/home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
-  runApp(const MyApp());
+  // Pour pouvoir utiliser les SharePreferences avant le runApp
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Instanciation du Cubit
+  final CompanyCubit companyCubit = CompanyCubit();
+
+  // Chargement des entreprises
+  companyCubit.loadCompanies();
+
+  runApp(BlocProvider<CompanyCubit>(
+    create: (_) => companyCubit,
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -12,6 +27,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MaterialApp(
         title: 'Liste des entreprises',
         theme: ThemeData(

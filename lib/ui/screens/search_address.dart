@@ -94,14 +94,23 @@ class _SearchAddressState extends State<SearchAddress> {
               itemCount: _addresses.length,
               itemBuilder: (context, index) {
                 final address = _addresses[index];
-                return ListTile(
-                  title: Text(
-                    '${address.street}, ${address.postCode} ${address.city}',
-                  ),
-                  subtitle: Text("[${address.coordonnees}]"),
-                  onTap: () {
-                    Navigator.pop(context, address);
-                  },
+                return Container(
+                  margin: const EdgeInsets.only(top: 10, bottom: 0, left: 10, right: 10),
+                  child:
+                    ListTile(
+                      shape: RoundedRectangleBorder(
+                        side: const BorderSide(color: Colors.black, width: 1),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      minLeadingWidth: 10,
+                      title: Text(
+                        '${address.street}, ${address.postCode} ${address.city}',
+                      ),
+                      subtitle: Text("[${address.coordonnees}]"),
+                      onTap: () {
+                        Navigator.pop(context, address);
+                      },
+                    )
                 );
               },
             ),
